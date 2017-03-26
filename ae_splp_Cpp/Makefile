@@ -26,7 +26,7 @@ SOURCES = jia.cpp ae.cpp
 
 OBJECTS = $(patsubst %.cpp, $(OBJECTS_FOLDER)/%.o, $(SOURCES)) 
 
-EXECUTABLE = ae
+EXECUTABLE = ae_jia
 
 all: $(LIBRARY) $(EXECUTABLE)
 
