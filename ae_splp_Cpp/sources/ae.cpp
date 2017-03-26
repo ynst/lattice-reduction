@@ -150,11 +150,13 @@ vector<int> AE::applyReduction() {
 
 	int num_ambigious_decisions = 0;
 
-	for (int i = 0; i < NUM_FACILITIES; ++i)
-	{
-		printf("%i, decision: %d, is ambiguous: %d\n",i, decisions[i], isAmbiguous[i]==true);
-		if (isAmbiguous[i] == 1){
-			num_ambigious_decisions++;
+	if(NUM_FACILITIES < 10){
+		for (int i = 0; i < NUM_FACILITIES; ++i)
+		{
+			printf("%i, decision: %d, is ambiguous: %d\n",i, decisions[i], isAmbiguous[i]==true);
+			if (isAmbiguous[i] == 1){
+				num_ambigious_decisions++;
+			}
 		}
 	}
 
@@ -168,6 +170,28 @@ vector<int> AE::applyReduction() {
 
 	cout << "# profit calculations\t\t" << num_prof_calls << endl;
 	return decisions;
+}
+
+float AE::bruteForce(int index){
+
+	if (index >= this->NUM_FACILITIES){
+		return profit_fxn(decisions); 
+	}
+
+	AE instance_with_0 = AE (*this);
+	instance_with_0.decisions[index] = 0;
+	instance_with_0.isAmbiguous[index] = 0;
+
+	AE instance_with_1 = AE (*this);
+	instance_with_1.decisions[index] = 1;
+	instance_with_1.isAmbiguous[index] = 0;
+
+	if (instance_with_0.bruteForce(index + 1) 
+		> instance_with_1.bruteForce(index + 1)){
+		return instance_with_0.bruteForce(index + 1);
+	} else {
+		return instance_with_1.bruteForce(index + 1);
+	}
 }
 
 vector<int> AE::applyFullReduction(){
@@ -205,10 +229,13 @@ vector<int> AE::applyFullReduction(){
 	return decisions;
 }
 
-int main(){
-	AE ae_instance(jia, 20);
+int main(int argc, char* argv[]){
 
-	char c1, c2, c3; // for user responses 
+	int num_facilities = stoi (argv[1],nullptr,0);	//read number of facilities
+
+	AE ae_instance(jia, num_facilities);
+
+	char c1, c2, c3, c4; // for user responses 
 
 	cout << "Run AE? y or n" << endl;
 	scanf(" %c", &c1);
@@ -237,13 +264,33 @@ int main(){
 		// cout << "# profit calculations\t\t" << ae_instance.num_prof_calls << endl;
 	}
 
+	cout << "Run brute force? y or n " << endl;
+	scanf(" %c", &c3);
+
+	if (c3 == 'y'){
+		clock_t start_time, end_time; // time at start and end of routine
+
+		start_time = clock(); // start time
+		cout << endl << "Starting brute force" << endl;
+
+		printf("Result is %.3f\n", ae_instance.bruteForce(0));
+
+		end_time = clock(); // finish time
+
+		double total_time = (end_time - start_time) / (double)CLOCKS_PER_SEC;
+
+		printf("Total time brute force took is %.3f s\n", total_time);
+
+		// cout << "# profit calculations\t\t" << ae_instance.num_prof_calls << endl;
+	}
+
 	// for (vector<bool>::const_iterator i = ae_instance.isAmbiguous.begin(); i != ae_instance.isAmbiguous.end(); ++i)
 	//     cout << *i << ' ';
 
 	cout << "Do you want to print out profit function? y or n" << endl;
-	scanf(" %c", &c3);
+	scanf(" %c", &c4);
 
-	if (c3 == 'y'){
+	if (c4 == 'y'){
 		vector<int> tempv(ae_instance.NUM_FACILITIES, 0); // initialize temp vector
 		ae_instance.dumpProfitFunction(tempv, 0);	
 	}

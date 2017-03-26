@@ -15,12 +15,13 @@ typedef double (*profit_function)(vector<int>); // type for conciseness
 
 class AE{
 public:
-	AE(profit_function given_prof_function, int size);
-	AE(const AE& other);
+	AE(profit_function given_prof_function, int size);//main constructor
+	AE(const AE& other); // copy constructor
 
 	void dumpProfitFunction (vector<int>, int);
 	vector<int> applyReduction ();
 	vector<int> applyFullReduction ();
+	float bruteForce ( int);
 
 	// vector to hold the ambiguous terms 
 	vector<bool> isAmbiguous;
