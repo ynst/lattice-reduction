@@ -1,0 +1,16 @@
+How to run ae_splp.cpp:
+
+1) Download the source file ae_splp.cpp 
+
+2) Open Terminal
+
+3) Navigate to the folder with the cpp files (for dropbox, you can just run the following command - without quotes - "cd ~/Dropbox/SCARF\ RA\ 2016/Yunus/ae_splp_Cpp”)
+
+4) Now you can run and compile running "g++ ae_splp.cpp && ./a.out 1000 1000”
+
+——— How to run Letchford's tests: —— 
+
+You need to change two things to run different test cases. “./a.out 1000 1000”
+
+First argument specifies the number of facilities and clients
+Second argument specifies the denominator of the fixed cost (10 refers to large fixed costs etc.)

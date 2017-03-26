@@ -1,0 +1,139 @@
+
+\documentclass[11pt]{article}
+%-------Packages---------
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{geometry}
+ \geometry{
+ total={170mm, 220mm},
+ left=20mm,
+ top=30mm,
+ bottom=40mm
+ }
+ \usepackage{float}
+\usepackage[ampersand]{easylist}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage[font = small]{caption}
+\usepackage{subcaption}
+\usepackage{dsfont}
+%\usepackage[section]{placeins}
+\usepackage{enumerate}
+\usepackage{mathrsfs}
+\usepackage{verbatim}
+\usepackage{clrscode}
+\usepackage{listings}
+\lstset{ 
+        language=Matlab,                                % choose the language of the code
+%       basicstyle=10pt,                                % the size of the fonts that are used for the code
+        numbers=left,                                   % where to put the line-numbers
+        numberstyle=\footnotesize,                      % the size of the fonts that are used for the line-numbers
+        stepnumber=1,                                           % the step between two line-numbers. If it's 1 each line will be numbered
+        numbersep=5pt,                                  % how far the line-numbers are from the code
+%       backgroundcolor=\color{white},          % choose the background color. You must add \usepackage{color}
+        showspaces=false,                               % show spaces adding particular underscores
+        showstringspaces=false,                         % underline spaces within strings
+        showtabs=false,                                         % show tabs within strings adding particular underscores
+%       frame=single,                                           % adds a frame around the code
+%       tabsize=2,                                              % sets default tabsize to 2 spaces
+%       captionpos=b,                                           % sets the caption-position to bottom
+        breaklines=true,                                        % sets automatic line breaking
+        breakatwhitespace=false,                        % sets if automatic breaks should only happen at whitespace
+        escapeinside={\%*}{*)}                          % if you want to add a comment within your code
+}
+
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{upgreek}
+\usepackage{bm}
+\usepackage[ruled]{algorithm2e}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{note}[theorem]{Note}
+\newtheorem{example}[theorem]{Example}
+%--------New Commands-------------------
+\linespread{1.05}
+
+\DeclareMathOperator{\tr }{Tr}
+
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\sub}{\subseteq}
+
+\renewcommand\Re{\operatorname{Re}}
+\renewcommand\Im{\operatorname{Im}}
+\newcommand{\res}{\text{res}}
+\newcommand{\Lagr}{\mathcal{L}}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\ang}[1]{\langle #1 \rangle}
+\newcommand{\set}[1]{\{ #1 \}}
+\newcommand{\st}{\text{ s.t. }}
+%\newcommand{\iff}{\text{ iff }}
+\newcommand{\Times}{\cdot}
+\newcommand{\pdd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dpdd}[2]{\frac{\partial^2 #1}{\partial #2 ^2}}
+\newcommand{\mpd}[3]{\frac{\partial^2 #1}{\partial #2 \partial #3}}
+\newcommand{\proj}[2]{\text{Proj}_{#1}(#2)}
+\newcommand{\intpi}[1]{\int_{-\pi}^\pi #1 dx}
+\newcommand{\intone}[1]{\int_{-1}^1 #1 dx}
+\newcommand{\valpi}{|^{\pi}_{-\pi}}
+\newcommand{\bolda}{\textbf{a}}
+\newcommand{\Lra}{\Leftrightarrow}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\H}{\mathbb{H}}
+\renewcommand{\S}{\mathbb{S}}
+\newcommand{\X}{\chi}
+\newcommand{\crazyU}{\mathfrak{A}}
+\newcommand{\dist}{\text{dist}}
+\newcommand{\ol}{\overline}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\vv}{\textbf{v}}
+\newcommand{\xx}{\textbf{x}}
+\newcommand{\hh}{\textbf{h}}
+\newcommand{\EE}{\textbf{E}}
+\newcommand{\Var}{\textbf{Var}}
+\newcommand{\summ}{\sum_{i=1}^n}
+\newcommand{\pdf}{probability density function}
+\newcommand{\I}{\textbf{I}}
+
+
+\newcommand{\Cov}{\textbf{Cov}}
+\newcommand{\x}{x^*}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+%\newcommand{\tr}{\text{Tr}}
+\newcommand{\pageline}{\noindent\rule[0.5ex]{\linewidth}{0.5pt}}
+\newcommand{\grad}{\nabla}
+%\renewcommand{\varphi}{\varphi}
+\newcommand{\liminfty}[1]{\lim_{#1 \rightarrow \infty}}
+\title{Computational Experiments of AE}
+\author{Yunus Tuncbilek}
+%{\color[rgb]{0.000000,0.000000,0.000000}
+\begin{document}
+\maketitle
+   
+\section{Computational complexity comparison of Jia's algorithm and AE}
+I will show that AE and Jia have the same best- and worst-case time complexities. 
+\begin{note}In my implementation of Jia and AE on C++, I found that Jia is faster. The reason behind that is that AE, by its nature, calculates the full profit function $\Pi$ in every iteration (this is an $O(n^2)$ operation for Jia's profit function), while Jia proposes an $O(n)$ equation that computes the derivative of the profit function with respect to a specific entry. This is why she gets the results much  faster than us. However, this does not apply to the general case.
+\end{note}
+$\textbf{Time complexity:}$ Ignoring the time to compute the marginal value for the profit function (more technically, assuming that the values are provided by a O(1)-time function) I prove, in AE_Technical_v6, that AE's time complexity is 
+\[\sum_{i=1}^t O(s_i)\]
+where $t$ is the number of iterations AE runs and $s_i$ is the number of terms that are not yet fixed. Similarly, Jia's time complexity is \[\sum_{i=1}^{t^*} O(n)\]
+since Jia applies $V$ to all entries every iteration. We proved earlier that Jia's and AE take the same number of steps, so $t = t^*$. We could get a better complexity than Jia in further steps, if our first $W$ calls fix many entries. However, since this cannot be guaranteed in  general case, we get the following time complexities \begin{center}
+\begin{tabular}{|r|l|l|}
+  \hline
+  & Best-case & Worst-case \\ \hline
+  Jia & $O(n)$ & $O(n^2)$ \\ \hline
+  AE  & $O(n)$ & $O(n^2)$   \\ \hline
+\end{tabular}
+\end{center}
+where the best-case time represents the time complexity when both algorithms terminate in constant number of steps. The worst case time represents the case when both algorithms run for $n$ steps.
+$\textbf{Space complexity:}$ Both algorithms use $O(n)$ in-memory space.
+
+\end{document}
+
