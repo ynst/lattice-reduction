@@ -22,11 +22,11 @@ INC = -I$(INC_FOLDER)
 
 RM = rm -f
 
-SOURCES = jia.cpp ae.cpp
+SOURCES = splp.cpp ae.cpp
 
 OBJECTS = $(patsubst %.cpp, $(OBJECTS_FOLDER)/%.o, $(SOURCES)) 
 
-EXECUTABLE = ae_jia
+EXECUTABLE = ae
 
 all: $(LIBRARY) $(EXECUTABLE)
 

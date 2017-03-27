@@ -38,7 +38,7 @@ private:
 	int num_prof_calls;
 };
 
-double jia(vector<int> decision_vector);
+double profit(vector<int> decision_vector);
 
 
 #endif

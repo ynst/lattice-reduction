@@ -150,13 +150,15 @@ vector<int> AE::applyReduction() {
 
 	int num_ambigious_decisions = 0;
 
-	if(NUM_FACILITIES < 10){
-		for (int i = 0; i < NUM_FACILITIES; ++i)
-		{
+	
+	for (int i = 0; i < NUM_FACILITIES; ++i)
+	{
+		if(NUM_FACILITIES < 50){
 			printf("%i, decision: %d, is ambiguous: %d\n",i, decisions[i], isAmbiguous[i]==true);
-			if (isAmbiguous[i] == 1){
-				num_ambigious_decisions++;
-			}
+		}
+
+		if (isAmbiguous[i] == 1){
+			num_ambigious_decisions++;
 		}
 	}
 
@@ -175,16 +177,14 @@ vector<int> AE::applyReduction() {
 float AE::bruteForce(int index){
 
 	if (index >= this->NUM_FACILITIES){
-		return profit_fxn(decisions); 
+		return profit_fxn(decisions);
 	}
 
 	AE instance_with_0 = AE (*this);
 	instance_with_0.decisions[index] = 0;
-	instance_with_0.isAmbiguous[index] = 0;
 
 	AE instance_with_1 = AE (*this);
 	instance_with_1.decisions[index] = 1;
-	instance_with_1.isAmbiguous[index] = 0;
 
 	if (instance_with_0.bruteForce(index + 1) 
 		> instance_with_1.bruteForce(index + 1)){
@@ -231,9 +231,16 @@ vector<int> AE::applyFullReduction(){
 
 int main(int argc, char* argv[]){
 
-	int num_facilities = stoi (argv[1],nullptr,0);	//read number of facilities
 
-	AE ae_instance(jia, num_facilities);
+	int num_facilities;
+
+	if (argc > 1){
+		num_facilities = stoi (argv[1],nullptr,0);	//read number of facilities
+	} else{
+		num_facilities = 10;
+	}
+
+	AE ae_instance(profit, num_facilities);
 
 	char c1, c2, c3, c4; // for user responses 
 
