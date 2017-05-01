@@ -6,9 +6,12 @@ AE::AE(profit_function given_prof_func, int size){
 	NUM_FACILITIES = size;
 	num_prof_calls = 0;
 
+	// initially all are ambiguous
 	vector<bool> temp(NUM_FACILITIES, true);
 	isAmbiguous = temp;
 
+	// initially all decisions are 0, closed
+	// but this assumption does not affect how the program runs
 	vector<int> tempdecisions(NUM_FACILITIES, 0);
 	decisions = tempdecisions;
 }
@@ -20,22 +23,6 @@ AE::AE(const AE& other){
 	num_prof_calls = other.num_prof_calls;
 	isAmbiguous = other.isAmbiguous;
 	decisions = other.decisions;
-}
-
-
-double AE::getProfitWithFirm(vector<int> decision_vector, int firm_index){
-	int temp = decision_vector[firm_index];
-
-	// case when the firm is closed
-	decision_vector[firm_index] = 1;
-
-	double profit_with_firm = profit_fxn(decision_vector);	
-
-	decision_vector[firm_index] = temp;
-
-	num_prof_calls++; // one call to get the marginal value
-
-	return profit_with_firm;
 }
 
 void AE::dumpProfitFunction (vector<int> v, int n){
@@ -55,25 +42,6 @@ void AE::dumpProfitFunction (vector<int> v, int n){
 
 	v[n] = 1;
 	AE::dumpProfitFunction (v, n+1);
-}
-
-double AE::getProfitWoutFirm(vector<int> decision_vector, int firm_index){
-	// for (vector<int>::const_iterator i = decision_vector.begin(); i != decision_vector.end(); ++i)
-	//     cout << *i << ' ';
-	int temp = decision_vector[firm_index];
-
-	// case when the firm is closed
-	decision_vector[firm_index] = 0;
-
-	double profit_wout_firm = profit_fxn(decision_vector);	
-
-	decision_vector[firm_index] = temp;
-
-	num_prof_calls++; // one call to get the marginal value
-
-	// printf("profit with firm %f profit without firm %f\n", profit_w_firm, profit_wout_firm);
-
-	return profit_wout_firm;
 }
 
 vector<int> AE::applyReduction() {	
@@ -110,12 +78,22 @@ vector<int> AE::applyReduction() {
 			if (isAmbiguous[i] == false){
 				continue;
 			}
-			if (sup_profit - getProfitWoutFirm(lattice_sup_decision_vector, i) >= 0)
-			{
+
+			// what if the facility is closed?
+			lattice_sup_decision_vector[i] = 0;
+
+			// if closing increases your profit then close it for good, using
+			// AE assumption
+			if (sup_profit - profit_fxn(lattice_sup_decision_vector) >= 0){
 				isAmbiguous[i]=false;
 				new_decisions[i] = 1;
 				num_changed++;
 			}
+			num_prof_calls++;
+
+
+			// return to default state
+			lattice_sup_decision_vector[i] = 1;
 		}
 
 		// checking for the infimum of the lattice
@@ -136,12 +114,21 @@ vector<int> AE::applyReduction() {
 			if (isAmbiguous[i] == false){
 				continue;
 			}
-			if (getProfitWithFirm(lattice_inf_decision_vector, i) - inf_profit <= 0)
+
+			// what if facility was open?
+			lattice_inf_decision_vector[i] = 1;
+
+			// if opening the facility increases your profit, use AE asssumption
+			if (profit_fxn(lattice_inf_decision_vector)  - inf_profit <= 0)
 			{
 				isAmbiguous[i]=false;
 				new_decisions[i] = 0;
 				num_changed++;
 			}
+			num_prof_calls++;
+
+			// return to default state
+			lattice_inf_decision_vector[i] = 0;
 		}
 		decisions = new_decisions;
 	} while(num_changed != 0);
@@ -171,31 +158,31 @@ vector<int> AE::applyReduction() {
 	cout << "# ambigious decisions\t\t" << num_ambigious_decisions << endl;
 
 	cout << "# profit calculations\t\t" << num_prof_calls << endl;
+
+	this->decisions = decisions; // write decision vector to the class
+
 	return decisions;
 }
 
-float AE::bruteForce(int index){
+vector<int> bruteForce(vector<int> v, int index, int num_facilities){
 
-	if (index >= this->NUM_FACILITIES){
-		return profit_fxn(decisions);
+	if (index >= num_facilities){
+		return v;
 	}
 
-	AE instance_with_0 = AE (*this);
-	instance_with_0.decisions[index] = 0;
+	vector<int> v0 =v, v1=v; 
+	v0[index] = 0;
+	v1[index] = 1;
 
-	AE instance_with_1 = AE (*this);
-	instance_with_1.decisions[index] = 1;
-
-	if (instance_with_0.bruteForce(index + 1) 
-		> instance_with_1.bruteForce(index + 1)){
-		return instance_with_0.bruteForce(index + 1);
+	if (profit(bruteForce(v0, index+1, num_facilities)) >
+		profit(bruteForce(v1, index+1, num_facilities))){
+		return bruteForce(v0, index+1, num_facilities);
 	} else {
-		return instance_with_1.bruteForce(index + 1);
+		return bruteForce(v1, index+1,num_facilities);
 	}
 }
 
 vector<int> AE::applyFullReduction(){
-
 	applyReduction();
 
 	for (int i = 0; i < NUM_FACILITIES; ++i)
@@ -240,6 +227,12 @@ int main(int argc, char* argv[]){
 		num_facilities = 10;
 	}
 
+	cout << "Testing AE\n";
+
+	if (!testAE(profit)){
+		return 0;
+	}
+
 	AE ae_instance(profit, num_facilities);
 
 	char c1, c2, c3, c4; // for user responses 
@@ -248,7 +241,7 @@ int main(int argc, char* argv[]){
 	scanf(" %c", &c1);
 
 	if (c1 == 'y'){
-		ae_instance.applyReduction(); // apply AE
+		ae_instance.applyReduction(); 	// apply AE
 	}
 
 	cout << "Run Extended AE? y or n " << endl;
@@ -280,7 +273,9 @@ int main(int argc, char* argv[]){
 		start_time = clock(); // start time
 		cout << endl << "Starting brute force" << endl;
 
-		printf("Result is %.3f\n", ae_instance.bruteForce(0));
+		vector<int> v (ae_instance.NUM_FACILITIES);
+
+		printf("Result is %.3f\n", profit(bruteForce(v, 0, ae_instance.NUM_FACILITIES)));
 
 		end_time = clock(); // finish time
 

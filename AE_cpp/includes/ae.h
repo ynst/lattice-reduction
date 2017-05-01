@@ -1,10 +1,13 @@
 // libraries
-#include <iostream>
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
 #include <chrono> /* library to calculate the time elapsed */
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -21,10 +24,8 @@ public:
 	void dumpProfitFunction (vector<int>, int);
 	vector<int> applyReduction ();
 	vector<int> applyFullReduction ();
-	float bruteForce ( int);
 
-	// vector to hold the ambiguous terms 
-	vector<bool> isAmbiguous;
+	vector<bool> isAmbiguous; // vector to hold the ambiguous terms 
 
 	vector<int> decisions;
 
@@ -32,13 +33,12 @@ public:
 private:
 	profit_function profit_fxn;
 
-	double getProfitWoutFirm (vector<int>, int);
-	double getProfitWithFirm (vector<int>, int);
-
 	int num_prof_calls;
 };
 
-double profit(vector<int> decision_vector);
+double profit (vector<int> decision_vector); 
 
+int testAE(profit_function profit_fxn);
+vector<int> bruteForce (vector<int>, int, int);
 
 #endif
