@@ -48,7 +48,7 @@ int testAE(profit_function profit){
 				AEobjects[i].decisions[j] != solution[j])
 			{
 				// sometimes AE and brute force would identify solutions with different decision
-				// vector, yet they would have almost the same profit. This is ok.
+				// vectors, yet they would have almost the same profit. That is ok.
 				if (std::abs(profit(AEobjects[i].decisions) - profit(solution)) <= 0.0001){
 					continue;
 				}
