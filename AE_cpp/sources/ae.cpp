@@ -183,7 +183,7 @@ vector<int> bruteForce(vector<int> v, int index, int num_facilities){
 }
 
 vector<int> AE::applyFullReduction(){
-	applyReduction();
+	(*this).applyReduction();
 
 	for (int i = 0; i < NUM_FACILITIES; ++i)
 	{
@@ -207,9 +207,9 @@ vector<int> AE::applyFullReduction(){
 				isAmbiguous = instance_with_0.isAmbiguous;
 			}
 
-			num_prof_calls += instance_with_0.num_prof_calls + instance_with_1.num_prof_calls;
+			num_prof_calls += instance_with_0.num_prof_calls + instance_with_1.num_prof_calls + 2;
 
-			break;
+			break; // enough to set one
 		}
 	}
 
