@@ -47,7 +47,7 @@ void AE::dumpProfitFunction (vector<int> v, int n){
 vector<int> AE::applyReduction() {	
 	clock_t start_time, end_time; // time at start and end of routine
 
-	vector<int> decisions (NUM_FACILITIES);
+	// vector<int> decisions (NUM_FACILITIES);
 	vector<int> new_decisions (NUM_FACILITIES);
 
 	start_time = clock(); // start time
@@ -219,10 +219,14 @@ vector<int> AE::applyFullReduction(){
 int main(int argc, char* argv[]){
 
 
-	int num_facilities;
+	int num_facilities, 
+		reductionScheme = 0; // AE: 0, EAE: 1, Brute force: 2, Print function: 3
 
 	if (argc > 1){
 		num_facilities = stoi (argv[1],nullptr,0);	//read number of facilities
+		if (argc > 2){
+			reductionScheme = stoi (argv[2],nullptr,0);
+		}
 	} else{
 		num_facilities = 10;
 	}
@@ -235,19 +239,21 @@ int main(int argc, char* argv[]){
 
 	AE ae_instance(profit, num_facilities);
 
-	char c1, c2, c3, c4; // for user responses 
+	// char c1, c2, c3, c4; // for user responses 
 
-	cout << "Run AE? y or n" << endl;
-	scanf(" %c", &c1);
+	// cout << "Run AE? y or n" << endl;
+	// scanf(" %c", &c1);
 
-	if (c1 == 'y'){
+	// if (c1 == 'y'){
+	if(reductionScheme == 0){
 		ae_instance.applyReduction(); 	// apply AE
 	}
 
-	cout << "Run Extended AE? y or n " << endl;
-	scanf(" %c", &c2);
+	// cout << "Run Extended AE? y or n " << endl;
+	// scanf(" %c", &c2);
 
-	if (c2 == 'y'){
+	// if (c2 == 'y'){
+	if (reductionScheme == 1){
 		clock_t start_time, end_time; // time at start and end of routine
 
 		start_time = clock(); // start time
@@ -264,10 +270,11 @@ int main(int argc, char* argv[]){
 		// cout << "# profit calculations\t\t" << ae_instance.num_prof_calls << endl;
 	}
 
-	cout << "Run brute force? y or n " << endl;
-	scanf(" %c", &c3);
+	// cout << "Run brute force? y or n " << endl;
+	// scanf(" %c", &c3);
 
-	if (c3 == 'y'){
+	// if (c3 == 'y'){
+	if (reductionScheme == 2){
 		clock_t start_time, end_time; // time at start and end of routine
 
 		start_time = clock(); // start time
@@ -289,10 +296,11 @@ int main(int argc, char* argv[]){
 	// for (vector<bool>::const_iterator i = ae_instance.isAmbiguous.begin(); i != ae_instance.isAmbiguous.end(); ++i)
 	//     cout << *i << ' ';
 
-	cout << "Do you want to print out profit function? y or n" << endl;
-	scanf(" %c", &c4);
+	// cout << "Do you want to print out profit function? y or n" << endl;
+	// scanf(" %c", &c4);
 
-	if (c4 == 'y'){
+	// if (c4 == 'y'){
+	if (reductionScheme == 3){
 		vector<int> tempv(ae_instance.NUM_FACILITIES, 0); // initialize temp vector
 		ae_instance.dumpProfitFunction(tempv, 0);	
 	}
