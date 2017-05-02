@@ -22,7 +22,7 @@ INC = -I$(INC_FOLDER)
 
 RM = rm -f
 
-SOURCES = splp.cpp ae.cpp
+SOURCES = utils.cpp jia.cpp ae.cpp test.cpp 
 
 OBJECTS = $(patsubst %.cpp, $(OBJECTS_FOLDER)/%.o, $(SOURCES)) 
 
