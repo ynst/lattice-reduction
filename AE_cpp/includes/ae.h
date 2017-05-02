@@ -1,4 +1,3 @@
-// libraries
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
@@ -41,5 +40,7 @@ double profit (vector<int> decision_vector);
 
 int testAE(profit_function profit_fxn);
 vector<int> bruteForce (vector<int>, int, int);
+
+float randomFloat(float min, float max);
 
 #endif

@@ -1,16 +1,5 @@
 #include "ae.h"
 
-float randomFloat(float min, float max)
-{
-    float random = ((float) rand()) / (float) RAND_MAX;
-
-    //example : generate float between 1 and 3
-    // generate (in your case) a float between 0 and (3-1)
-    // then add 1 to get a float between 1  and 3
-    float range = max - min;
-    return (random*range) + min;
-}
-
 double profit(vector<int> decision_vector){
 
 	int NUM_CLIENTS = decision_vector.size(), NUM_FACILITIES = decision_vector.size();
@@ -31,7 +20,7 @@ double profit(vector<int> decision_vector){
 
 	//fixed costs are loading here
 	for (int i = 0; i < NUM_FACILITIES ; i++){
-		fixed_cost[i] = sqrt(NUM_CLIENTS) * 0.001;
+		fixed_cost[i] = sqrt(NUM_CLIENTS) * 0.1;
 	}
 
 	vector<float> facility_x (NUM_FACILITIES);
