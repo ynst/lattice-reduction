@@ -82,15 +82,27 @@ vector<int> AE::applyReduction() {
 			// what if the facility is closed?
 			lattice_sup_decision_vector[i] = 0;
 
-			// if closing increases your profit then close it for good, using
-			// AE assumption
-			if (sup_profit - profit_fxn(lattice_sup_decision_vector) >= 0){
-				isAmbiguous[i]=false;
-				new_decisions[i] = 1;
-				num_changed++;
+			if (AE_CASE == 1) // submodular
+			{
+				// if closing increases your profit then close it for good, using
+				// AE assumption
+				if (sup_profit - profit_fxn(lattice_sup_decision_vector) >= 0){
+					isAmbiguous[i]=false;
+					new_decisions[i] = 1;
+					num_changed++;
+				}
+				num_prof_calls++;
 			}
-			num_prof_calls++;
-
+			else {
+				// if closing increases your profit then close it for good, using
+				// AE assumption
+				if (sup_profit - profit_fxn(lattice_sup_decision_vector) <= 0){
+					isAmbiguous[i]=false;
+					new_decisions[i] = 0;
+					num_changed++;
+				}
+				num_prof_calls++;
+			}
 
 			// return to default state
 			lattice_sup_decision_vector[i] = 1;
@@ -118,14 +130,27 @@ vector<int> AE::applyReduction() {
 			// what if facility was open?
 			lattice_inf_decision_vector[i] = 1;
 
-			// if opening the facility increases your profit, use AE asssumption
-			if (profit_fxn(lattice_inf_decision_vector)  - inf_profit <= 0)
+			if (AE_CASE == 1) // submodular
 			{
-				isAmbiguous[i]=false;
-				new_decisions[i] = 0;
-				num_changed++;
+				// if opening the facility increases your profit, use AE asssumption
+				if (profit_fxn(lattice_inf_decision_vector)  - inf_profit <= 0)
+				{
+					isAmbiguous[i]=false;
+					new_decisions[i] = 0;
+					num_changed++;
+				}
+				num_prof_calls++;
 			}
-			num_prof_calls++;
+			else {
+				// if opening the facility increases your profit, use AE asssumption
+				if (profit_fxn(lattice_inf_decision_vector)  - inf_profit >= 0)
+				{
+					isAmbiguous[i]=false;
+					new_decisions[i] = 1;
+					num_changed++;
+				}
+				num_prof_calls++;
+			}
 
 			// return to default state
 			lattice_inf_decision_vector[i] = 0;
@@ -220,12 +245,16 @@ int main(int argc, char* argv[]){
 
 
 	int num_facilities, 
-		reductionScheme = 0; // AE: 0, EAE: 1, Brute force: 2, Print function: 3
+		reductionScheme = 0,/*AE: 0, EAE: 1, Brute force: 2, Print function: 3*/
+		AE_CASE=1; 
 
 	if (argc > 1){
 		num_facilities = stoi (argv[1],nullptr,0);	//read number of facilities
 		if (argc > 2){
 			reductionScheme = stoi (argv[2],nullptr,0);
+			if (argc > 3){
+				AE_CASE = stoi (argv[3],nullptr,0); // 1 submodular, 0 supermod
+			}
 		}
 	} else{
 		num_facilities = 10;
@@ -238,6 +267,8 @@ int main(int argc, char* argv[]){
 	}
 
 	AE ae_instance(profit, num_facilities);
+
+	ae_instance.AE_CASE = AE_CASE;
 
 	// char c1, c2, c3, c4; // for user responses 
 
