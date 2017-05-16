@@ -42,5 +42,7 @@ int testAE(profit_function profit_fxn);
 vector<int> bruteForce (vector<int>, int, int);
 
 float randomFloat(float min, float max);
+float randomFrechet (float);
+void displayProgressBar(float progress);
 
 #endif
