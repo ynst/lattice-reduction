@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath> // for abs()
+#include <limits.h>
 
 using namespace std;
 
@@ -29,6 +30,7 @@ public:
 
 	vector<int> decisions;
 
+	int AE_CASE;
 	int NUM_FACILITIES;
 private:
 	profit_function profit_fxn;
