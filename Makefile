@@ -13,7 +13,7 @@ OBJECTS_FOLDER = ./objects
 CXX = g++
 
 # Debug
-CXXFLAGS = -g3 -O0 -Wall 
+CXXFLAGS = -g3 -O0 -Wall -std=c++11
 
 # Release
 #CXXFLAGS = -O2 -Wall
@@ -22,7 +22,11 @@ INC = -I$(INC_FOLDER)
 
 RM = rm -f
 
+<<<<<<< HEAD:AE_cpp/Makefile
 SOURCES = utils.cpp jia.cpp ae.cpp test.cpp 
+=======
+SOURCES = utils.cpp test.cpp splp.cpp ae.cpp
+>>>>>>> 4af1d8a2097d6fb59563765a49a04017ec15dab3:Makefile
 
 OBJECTS = $(patsubst %.cpp, $(OBJECTS_FOLDER)/%.o, $(SOURCES)) 
 
