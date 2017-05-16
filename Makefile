@@ -13,7 +13,7 @@ OBJECTS_FOLDER = ./objects
 CXX = g++
 
 # Debug
-CXXFLAGS = -g3 -O0 -Wall 
+CXXFLAGS = -g3 -O0 -Wall -std=c++11
 
 # Release
 #CXXFLAGS = -O2 -Wall
@@ -22,7 +22,7 @@ INC = -I$(INC_FOLDER)
 
 RM = rm -f
 
-SOURCES = splp.cpp ae.cpp
+SOURCES = utils.cpp test.cpp splp.cpp ae.cpp
 
 OBJECTS = $(patsubst %.cpp, $(OBJECTS_FOLDER)/%.o, $(SOURCES)) 
 
