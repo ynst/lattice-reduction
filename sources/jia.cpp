@@ -15,8 +15,9 @@ double profit(vector<int> decision_vector){
 		// random seed must only depend on the index of fixed costs to ensure
 		// same value is output every time profit is calculated
 		// srand ( i * 100); 
-		fixed_costs.push_back(randomFrechet(randomFloat(0,1)));
-		cout << fixed_costs[i] << " " << i << "\n";
+		fixed_costs.push_back(2*decision_vector.size()*randomFloat(-1.5,1));
+		// fixed_costs.push_back(randomFrechet(randomFloat(0,1)));
+		// cout << fixed_costs[i] << " " << i << "\n";
 	}
 
 	vector<double> distances(decision_vector.size()*decision_vector.size(), 0);
@@ -40,7 +41,6 @@ double profit(vector<int> decision_vector){
 	{
 		if(decision_vector[i]){
 			prof2return+=fixed_costs[i]; //Xi
-			if(i==5){ cout << "\n"<< fixed_costs[i] << "\n";}
 			for (int j = 0; j < decision_vector.size(); ++j){
 				if(j!=i && decision_vector[j]){
 					prof2return+=delta/distances[i*decision_vector.size()+ j]; 
