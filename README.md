@@ -24,4 +24,4 @@ The program takes three inputs: the number of locations, a 0-2 number showing wh
 
 `0` represents supermodular and `1` represents submodular.
 
-For example, the AE case with `delta = -1` (submodular) and `100` locations would be `./ae 100 0 0`
+For example, the AE case with `delta = -1` (submodular) and `100` locations would be `./ae 100 0 1`
