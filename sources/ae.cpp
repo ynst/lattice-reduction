@@ -260,11 +260,13 @@ int main(int argc, char* argv[]){
 		num_facilities = 10;
 	}
 
-	cout << "Testing AE\n";
+	cout << BOLDBLUE << "Testing AE..." << endl << RESET;
 
 	if (!testAE(profit)){
 		return 0;
 	}
+
+	cout << endl << endl << BLUE << "Running\n" << RESET;
 
 	AE ae_instance(profit, num_facilities);
 
@@ -335,6 +337,8 @@ int main(int argc, char* argv[]){
 		vector<int> tempv(ae_instance.NUM_FACILITIES, 0); // initialize temp vector
 		ae_instance.dumpProfitFunction(tempv, 0);	
 	}
+
+	cout << BOLDGREEN << "Completed successfully!" << endl << RESET;
 
 	return 0;
 }
