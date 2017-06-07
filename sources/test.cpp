@@ -7,7 +7,7 @@ void errorExit(AE AE_instance, string errorMessage){
 	myfile.close();
 
 	vector<int> tempv(AE_instance.NUM_FACILITIES, 0); // to dump profit function	
-	AE_instance.dumpProfitFunction(tempv, 0);  //output to the profits to file
+	// AE_instance.dumpProfitFunction(tempv, 0);  //output to the profits to file
 }
 
 int testAE(profit_function profit){
@@ -54,7 +54,7 @@ int testAE(profit_function profit){
 				}
 
 				std::stringstream ss;
-				ss << "ERROR in testing";
+				ss << BOLDRED << "ERROR in testing" << RESET;
 				ss << solution[j] << "\n";
 				ss << AEobjects[i].decisions[j];
 				errorExit(AEobjects[i], ss.str());
@@ -65,6 +65,6 @@ int testAE(profit_function profit){
 
 	std::cout.clear(); // restore the original stream buffer
 
-	cout<< "––––––––––––– Passed test cases –––––––––––––\n";
+	cout << GREEN << "––––––––––––– Passed test cases –––––––––––––" << RESET;
 	return 1;
 }
