@@ -5,6 +5,7 @@ AE::AE(profit_function given_prof_func, int size){
 	profit_fxn = given_prof_func;
 	NUM_FACILITIES = size;
 	num_prof_calls = 0;
+	num_splits = 0;
 
 	// initially all are ambiguous
 	vector<bool> temp(NUM_FACILITIES, true);
@@ -213,7 +214,6 @@ vector<int> AE::applyFullReduction(){
 	for (int i = 0; i < NUM_FACILITIES; ++i)
 	{
 		if (isAmbiguous[i] == 1){
-
 			AE instance_with_0 = AE (*this);
 			instance_with_0.decisions[i] = 0;
 			instance_with_0.isAmbiguous[i] = 0;
@@ -231,6 +231,8 @@ vector<int> AE::applyFullReduction(){
 				decisions = instance_with_0.decisions;
 				isAmbiguous = instance_with_0.isAmbiguous;
 			}
+
+			num_splits += instance_with_0.num_splits + instance_with_1.num_splits + 1;
 
 			num_prof_calls += instance_with_0.num_prof_calls + instance_with_1.num_prof_calls + 2;
 
@@ -290,12 +292,13 @@ int main(int argc, char* argv[]){
 		double total_time = (end_time - start_time) / (double)CLOCKS_PER_SEC;
 
 		printf("Total time EAE took is %.3f s\n", total_time);
+		cout << "# splits\t\t" << ae_instance.num_splits << endl;
 	}
 
 	if (reductionScheme == 0 || reductionScheme == 1){
 		int num_open = 0;
 
-		for (int i = 0; i < NUM_FACILITIES; ++i){
+		for (int i = 0; i < ae_instance.decisions.size(); ++i){
 			if (ae_instance.decisions[i] && !ae_instance.isAmbiguous[i]){
 				num_open++;
 			}

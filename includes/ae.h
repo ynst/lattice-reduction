@@ -53,6 +53,7 @@ public:
 
 	int AE_CASE;
 	int NUM_FACILITIES;
+	int num_splits; // however many EAE is applied
 private:
 	profit_function profit_fxn;
 
