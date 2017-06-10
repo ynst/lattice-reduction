@@ -262,13 +262,13 @@ int main(int argc, char* argv[]){
 		num_facilities = 10;
 	}
 
-	cout << BOLDBLUE << "Testing AE..." << endl << RESET;
+	// cout << BOLDBLUE << "Testing AE..." << endl << RESET;
 
-	if (!testAE(profit)){
-		return 0;
-	}
+	// if (!testAE(profit)){
+	// 	return 0;
+	// }
 
-	cout << endl << endl << BLUE << "Running\n" << RESET;
+	cout << BOLDBLUE << "Running\n" << RESET;
 
 	// create an instance of AE
 	AE ae_instance(profit, num_facilities);
