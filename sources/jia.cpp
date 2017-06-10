@@ -15,7 +15,7 @@ double profit(vector<int> decision_vector){
 		// random seed must only depend on the index of fixed costs to ensure
 		// same value is output every time profit is calculated
 		// srand ( i * 100); 
-		fixed_costs.push_back(2*decision_vector.size()*randomFloat(-1.5,1));
+		fixed_costs.push_back(2*decision_vector.size()*randomFloat(-1,0.1));
 		// fixed_costs.push_back(randomFrechet(randomFloat(0,1)));
 		// cout << fixed_costs[i] << " " << i << "\n";
 	}
