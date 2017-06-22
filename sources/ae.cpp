@@ -24,6 +24,7 @@ AE::AE(const AE& other){
 	num_prof_calls = other.num_prof_calls;
 	isAmbiguous = other.isAmbiguous;
 	decisions = other.decisions;
+	num_splits = other.num_splits;
 }
 
 void AE::dumpProfitFunction (vector<int> v, int n){
